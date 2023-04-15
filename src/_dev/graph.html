@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 200%">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Climate History</title>
+  </head>
+  <body style="height: 100%; width: 90%; margin-left: auto; margin-right: auto">
+    <div style="height: 100%; margin: auto">
+      <div style="height: 45%">
+        <canvas id="temp"></canvas>
+      </div>
+      <div style="height: 10%;"></div>
+      <div style="height: 45%;">
+        <canvas id="humidity"></canvas>
+      </div>
+    </div>
+    <script lang="js">
+        const tempCanvas = document.getElementById('temp');
+      const humidCanvas = document.getElementById('humidity');
+      let data = {}
+      let tempChart = new Chart(tempCanvas, {
+          type: 'line',
+          data: {},
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: {
+                      position: 'top'
+                  },
+                  title: {
+                      display: true,
+                      text: 'Climate History'
+                  }
+              },
+          }
+      });
+      let humidChart = new Chart(humidCanvas, {
+          type: 'line',
+          data: {},
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: {
+                      position: 'top'
+                  },
+                  title: {
+                      display: true,
+                      text: 'Humidity History'
+                  }
+              },
+              scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                }
+              }
+          }
+      });
+      fetch("/graph_data.json").then((res)=>{
+          res.json().then((finalRes) => {
+              tempChart.data = finalRes.temp;
+              humidChart.data = finalRes.humid;
+              tempChart.update();
+              humidChart.update();
+          });
+      });
+    </script>
+  </body>
+</html>

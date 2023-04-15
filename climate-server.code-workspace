@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"alloc",
+			"chrono",
+			"datetime",
+			"dotenv",
+			"rgba",
+			"rustls",
+			"serde",
+			"sqlclient",
+			"sqlserver",
+			"sqlx"
+		],
+		"rust-analyzer.linkedProjects": [
+			".\\Cargo.toml"
+		]
+	}
+}
