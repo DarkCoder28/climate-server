@@ -103,7 +103,7 @@ pub async fn serve_graph_data(_req: Request<()>) -> tide::Result {
                 have_src = true;
             }
             if !have_labels {
-                let time = (&entry.time).to_owned().with_timezone::<Local>(&chrono::Local).format("%Y-%m-%d %H").to_string();
+                let time = (&entry.time).to_owned().with_timezone::<Local>(&chrono::Local).format("%m-%d-%Y %H").to_string();
                 labels.push(time);
             }
             new_temp_data.push((&entry.temp_f).to_owned());

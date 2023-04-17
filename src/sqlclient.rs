@@ -54,18 +54,23 @@ pub async fn get_history(pool: &Pool<MySql>) -> Result<Vec<Vec<Entry>>, sqlx::Er
         .fetch_all(pool).await?;
     let mut historical_data: Vec<Vec<Entry>> = Vec::new();
     for source in sources {
-        let source_history = sqlx::query_as::<_, Entry>("SELECT t.`source`, t.`time`, t.`temp_c`, t.`temp_f`, t.`humidity` 
-        FROM 
-        (
-            SELECT `source`, `time`, `temp_c`, `temp_f`, `humidity`, ROW_NUMBER() OVER (ORDER BY `time` DESC) AS row_num
-            FROM `data` WHERE `source` = ? 
-            ORDER BY `time`
+        let source_history = sqlx::query_as::<_, Entry>("
+        SELECT * FROM (
+            SELECT t.`source`, t.`time` AS time, t.`temp_c`, t.`temp_f`, t.`humidity` 
+            FROM 
+            (
+                SELECT `source`, `time`, `temp_c`, `temp_f`, `humidity`, ROW_NUMBER() OVER (ORDER BY `time` DESC) AS row_num
+                FROM `data` WHERE `source` = ? 
+                ORDER BY `time`
+                DESC
+            ) AS t 
+            WHERE t.`row_num` % 60 = 0
+            ORDER BY t.`time`
             DESC
-        ) AS t 
-        WHERE t.`row_num` % 60 = 0
-        ORDER BY t.`time`
-        DESC
-        LIMIT 168;")
+            LIMIT 168
+        ) AS f
+        ORDER BY f.`time`
+        ASC;")
             .bind(&source.source)
             .fetch_all(pool).await?;
         let mut entry_pool: Vec<Entry> = Vec::new();
