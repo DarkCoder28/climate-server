@@ -8,6 +8,7 @@ EXPOSE 3000
 #ENV SQL_PASS
 #ENV SQL_DB
 
-COPY --chown=root:root --chmod=555 climate-server /srv/climate-server
+COPY climate-server /srv/climate-server
 WORKDIR /srv/
+RUN chown root:root ./climate-server ; chmod 555 ./climate-server
 ENTRYPOINT /srv/climate-server

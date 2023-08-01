@@ -16,3 +16,5 @@ Cargo.lock
 # Other
 notes/
 .env
+docker
+image.tar

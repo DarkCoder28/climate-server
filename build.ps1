@@ -12,7 +12,7 @@ cargo build -r
 
 echo "Building dockerfile image tar for Portainer"
 
-mkdir docker
+mkdir -Force docker
 cp ./target/x86_64-unknown-linux-musl/release/climate-server ./docker/
 cp ./Dockerfile ./docker/
 tar -cvf image.tar -C ./docker *
